@@ -18,6 +18,7 @@ This skill is a **methodology plus executable probes that put real source first*
 - Multi-page sites → crawl internal routes before designing templates
 - Interactive sites → record hover / click / scroll / canvas-drag states before cloning
 - **WebGL / Canvas / Three.js heavy frontends** → reverse-engineer real source, line by line; when there's no findable source, runtime frame-capture + a **baseline-first replay gate** with `SOURCE / PARTIAL / GUESS` evidence grading
+- **Static-built sites (Astro / Vite SSG / Hugo), even WebGL-heavy** → `mirror-site.mjs` full-scroll-captures and mirrors every deployed asset (incl. runtime-fetched `.sog/.buf/.wasm`) for a true 1:1 clone — for a static site, "get the real source" = "mirror the whole deployed bundle"
 - Verify in a real browser, document the truth, replace content with yours
 - **Visual / rebrand modes** → distill a versionable `design-dna.json` (design tokens + style + effects), then "keep the DNA, swap the content"
 
@@ -40,11 +41,13 @@ claude-skill-web-clone/
 └── references/
     ├── reverse-engineering.md     ← How to dissect a WebGL/Canvas frontend, line by line
     ├── effect-extraction.md       ← Evidence grading + baseline-first gate for extracting effects
+    ├── static-mirror.md           ← 1:1 clone of static-built sites (Astro/Vite SSG/Hugo) via full asset mirror
     ├── design-dna.md              ← Structured design-identity layer (visual / rebrand modes)
     ├── marbles-case.md            ← Flagship case: real architecture vs AI hallucination
     └── deliverables.md            ← NOTES.md / TEARDOWN.md / RECON/ templates
 └── scripts/
     ├── recon-site.mjs             ← Browser screenshots + DOM/framework/resource signals
+    ├── mirror-site.mjs            ← Full-scroll capture + mirror every same-origin asset (static-site 1:1 clone)
     ├── route-crawl.mjs            ← Same-site route map + screenshot per route
     ├── interaction-probe.mjs      ← Scroll/hover/click/canvas-drag state evidence
     ├── network-capture.mjs        ← XHR/fetch capture for SPA fixtures
@@ -108,6 +111,7 @@ Before deploying anything publicly, **check the source repo's license**:
 - 静态 HTML/CSS 站 → `wget --mirror`
 - React / Vue / Next 内容站 → 重建模板灌内容
 - **WebGL / Canvas / Three.js 重前端** → 逆向真源码,逐行核对;找不到源码时用运行时帧捕获 + **baseline-first 复现闸门** + `SOURCE/PARTIAL/GUESS` 证据分级
+- **静态构建站(Astro/Vite SSG/Hugo),哪怕重 WebGL** → `mirror-site.mjs` 全程滚动捕获 + 镜像每一个部署资产(含运行时 fetch 的 `.sog/.buf/.wasm`),做真 1:1 忠实复刻——对静态站,"拿到真源码"="镜像部署资产整套"(范例:Lusion oryzo.ai,高斯泼溅,hero 像素 diff 5/5)
 - **视觉复刻 / 内容爆改模式** → 把"那个站的感觉"蒸馏成可版本化的 `design-dna.json`(设计 token + 风格 + 特效),然后"DNA 留着、内容换掉"
 - 浏览器真验证,如实记录,最后替换成你自己的内容
 

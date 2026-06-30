@@ -8,7 +8,7 @@ description: >
   WebGL-Canvas 重前端站三大分支，并强制核对任何 AI 二手分析里的可执行代码。
 metadata:
   author: jane (xiaoer)
-  version: "1.5.0"
+  version: "1.6.0"
   use_case: 个人本地复刻/学习网站，沉淀自 website-clones 克隆中枢
 ---
 
@@ -113,7 +113,8 @@ node /Users/jane/.shared-skills/web-clone/scripts/dna-scaffold.mjs \
 | 多页面官网 / 产品站 | 先跑 `route-crawl.mjs` 做路由地图 → 每类页面抽模板 → 统一替换内容 |
 | 复杂交互站 | 先跑 `interaction-probe.mjs` 记录 hover/click/scroll/canvas drag 状态 → 按状态补交互，不许只截首屏 |
 | **WebGL / Canvas / Three.js 重前端** | **深度逆向真源码（见下）→ 忠实复刻 或 找同类开源 3D 模板换内容**。单文件原生站常常逐字节保留=最忠实复刻。**找不到真源码时走运行时帧捕获 + baseline 闸门**，纪律见 `references/effect-extraction.md`（可委托 web-shader-extractor） |
-| 大型开源生态（Astro/Hugo 主题） | 去对应主题市场找源主题 |
+| **静态构建站（Astro/Vite SSG/Hugo），含重 WebGL** | **`mirror-site.mjs` 全量镜像部署资产 → 自托管字体 + 删追踪 → 本地 web 根服务 = 真源码 1:1 忠实复刻**。对静态站，"拿到真源码"="镜像部署资产整套"。配方见 `references/static-mirror.md`。范例：oryzo.ai（Lusion，L6，高斯泼溅，hero 像素 diff 5/5） |
+| 用现成开源主题的站（Astro/Hugo 主题） | 去对应主题市场找源主题（**仅限套用现成主题的站**；定制站走上一行的全量镜像，别来这行） |
 
 L4-L6 复杂站按 `references/complex-playbooks.md` 走，不要只用普通官网流程。
 
@@ -223,6 +224,7 @@ SSL_CERT_FILE=/etc/ssl/cert.pem gh api repos/<u>/<r> | jq '.license'  # + 找 LI
 - `scripts/recon-site.mjs`：用 Playwright 打开页面，采集框架/资源/DOM 结构/console 错误，并保存三档截图。
 - `scripts/asset-harvest.mjs`：从侦察 JSON 下载原站图片、脚本、样式并生成素材清单。
 - `scripts/network-capture.mjs`：捕获 XHR/fetch 请求并保存 JSON/text 响应，给 SPA/SaaS 做本地 fixtures。
+- `scripts/mirror-site.mjs`：真浏览器全程滚动捕获每一个真实请求 → 按路径镜像同源资产（含 JS 运行时 fetch 的 `.sog/.buf/.wasm/.riv`/字体），给静态构建站（Astro/Vite SSG/Hugo）做 1:1 忠实复刻。详见 `references/static-mirror.md`。
 - `scripts/route-crawl.mjs`：爬同站内部链接，按路由保存截图、标题、H1、结构信号，解决多页面站只复刻首页的问题。
 - `scripts/interaction-probe.mjs`：自动执行 scroll、hover、安全 click、canvas drag，保存交互前后状态、截图、网络和 console 证据。
 - `scripts/sourcemap-hunt.mjs`：从 JS chunk 里找 source map，能拿到就保存源码映射。
